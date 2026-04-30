@@ -1,0 +1,26 @@
+[project]
+name = "pythonproject5"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "VoronkoV_Y",email = "voronkov-y@yandex.ru"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pytest (>=9.0.3,<10.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.group.lint.dependencies]
+black = "^26.3.1"
+flake8 = "^7.3.0"
+
+
+[tool.poetry.group.dev.dependencies]
+pytest-cov = "^7.1.0"
+
