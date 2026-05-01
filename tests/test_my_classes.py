@@ -1,6 +1,3 @@
-import pytest
-
-
 def test_product_class(product_fixture):
     assert product_fixture.name == "Test_name"
     assert product_fixture.description == "Test description"
