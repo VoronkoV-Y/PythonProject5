@@ -40,11 +40,12 @@ class Product:
                     prod.quantity +=  user_product_dict["quantity"]
                     prod.__price = max(prod.__price, user_product_dict["price"])
                     return prod
+            else:
+                new_user_product = Product(**user_product_dict)
+                return new_user_product
         else:
             new_user_product = Product(**user_product_dict)
-            Product.product_list.append(new_user_product)
             return new_user_product
-
 
 
 class Category:
