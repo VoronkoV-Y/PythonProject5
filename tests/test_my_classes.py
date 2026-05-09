@@ -66,3 +66,10 @@ def test_category_class(capsys, category_1_fixture, category_2_fixture):
 
     assert category_1_fixture.product_count == 115
     assert category_2_fixture.product_count == 115
+
+
+def test_category_add_product(category_1_fixture):
+    category_count_initial = category_1_fixture.product_count
+    new_prod = Product("New_name", "New Test description", 4.99, 18)
+    category_1_fixture.add_product(new_prod)
+    assert category_1_fixture.product_count == category_count_initial + 1
