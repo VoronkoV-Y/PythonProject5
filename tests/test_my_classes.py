@@ -48,6 +48,15 @@ def test_new_product_existing(user_product_dict2):
     assert test_product2.quantity == 100
 
 
+def test_product_class_str(capsys, product_fixture):
+    print(product_fixture)
+    screen_message = capsys.readouterr()
+    assert screen_message.out.strip() == "Test_name, 54.99 руб. Остаток: 65 шт."
+
+def test_product_class_add(product_fixture, product_2_fixture):
+    assert product_fixture + product_2_fixture == 6874.35
+
+
 # тесты для класса Category
 
 def test_category_class(capsys, category_1_fixture, category_2_fixture):
@@ -73,3 +82,8 @@ def test_category_add_product(category_1_fixture):
     new_prod = Product("New_name", "New Test description", 4.99, 18)
     category_1_fixture.add_product(new_prod)
     assert category_1_fixture.product_count == category_count_initial + 1
+
+def test_category_class_str(capsys, category_1_fixture):
+    print(category_1_fixture)
+    screen_message = capsys.readouterr()
+    assert screen_message.out.strip() == "Cat_Test_name, количество продуктов: 105 шт."

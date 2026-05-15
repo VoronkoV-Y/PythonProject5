@@ -15,6 +15,12 @@ class Product:
         self.quantity = quantity
         Product.product_list.append(self)
 
+    def __str__(self):
+        return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
+
+    def __add__(self, other):
+        return self.__price * self.quantity + other.__price * other.quantity
+
     @property
     def price(self):
         return self.__price
@@ -30,7 +36,6 @@ class Product:
                     self.__price = new_price
             else:
                 self.__price = new_price
-
 
     @classmethod
     def new_product(cls, user_product_dict: dict):
@@ -65,6 +70,10 @@ class Category:
         Category.category_count += 1
         Category.product_count += sum([x.quantity for x in self.__products])
 
+    def __str__(self):
+       quantity = sum([x.quantity for x in self.__products]) # согласно ДЗ зачем-то повторяем код из инициализации
+       return f"{self.name}, количество продуктов: {quantity} шт."
+
     def add_product(self, new_product: Product):
         self.__products.append(new_product)
         Category.product_count += 1
@@ -72,4 +81,6 @@ class Category:
     @property
     def products(self):
         for product in self.__products:
-            print(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n")
+            # print(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n")
+            print(product)
+            print()
