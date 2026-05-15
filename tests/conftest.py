@@ -27,3 +27,15 @@ def category_2_fixture():
         "Category Test description 2",
         [Product("Test_name 2", "Test description 2", 154.99, 10)],
     )
+
+
+@pytest.fixture
+def user_product_dict():
+    return {"name": "Samsa", "description": "Very tasty samsa", "price": 180,
+         "quantity": 5}
+
+
+@pytest.fixture
+def user_product_dict2():
+    return {"name": "Samsa", "description": "Very tasty samsa", "price": 135,
+         "quantity": 95}
