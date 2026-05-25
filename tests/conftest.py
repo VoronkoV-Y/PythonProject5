@@ -6,6 +6,9 @@ from src.my_classes import Product, Category
 def product_fixture():
     return Product("Test_name", "Test description", 54.99, 65)
 
+@pytest.fixture
+def product_2_fixture():
+    return Product("Testo", "Testo's description", 100, 33)
 
 @pytest.fixture
 def category_1_fixture():
