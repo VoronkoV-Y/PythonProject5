@@ -5,7 +5,7 @@ from src.my_classes import Category, Product
 
 def data_load_from_json(path_json):
     """Функция считывает данные мз JSON-файла и подгружает данные
-     по категориям и товарам, чтобы конвертировать их в объекты"""
+    по категориям и товарам, чтобы конвертировать их в объекты"""
 
     path_to_file = str(PATH_data) + "\\" + path_json
     categories = []

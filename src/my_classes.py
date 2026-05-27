@@ -19,7 +19,9 @@ class Product:
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
 
     def __add__(self, other):
-        return self.__price * self.quantity + other.__price * other.quantity
+        if type(other) == self.__class__:
+            return self.__price * self.quantity + other.__price * other.quantity
+        raise TypeError
 
     @property
     def price(self):
@@ -31,7 +33,9 @@ class Product:
             print("Цена не должна быть нулевая или отрицательная")
         else:
             if new_price < self.__price:
-                users_price_answer = input("Согласны лм вы понизить цену?['y' - да, остальное - нет]")
+                users_price_answer = input(
+                    "Согласны лм вы понизить цену?['y' - да, остальное - нет]"
+                )
                 if users_price_answer == "y":
                     self.__price = new_price
             else:
@@ -42,7 +46,7 @@ class Product:
         if Product.product_list:
             for prod in Product.product_list:
                 if prod.name == user_product_dict["name"]:
-                    prod.quantity +=  user_product_dict["quantity"]
+                    prod.quantity += user_product_dict["quantity"]
                     prod.__price = max(prod.__price, user_product_dict["price"])
                     return prod
             else:
@@ -71,12 +75,19 @@ class Category:
         Category.product_count += sum([x.quantity for x in self.__products])
 
     def __str__(self):
-       quantity = sum([x.quantity for x in self.__products]) # согласно ДЗ зачем-то повторяем код из инициализации
-       return f"{self.name}, количество продуктов: {quantity} шт."
+        quantity = sum(
+            [x.quantity for x in self.__products]
+        )  # согласно ДЗ зачем-то повторяем код из инициализации
+        return f"{self.name}, количество продуктов: {quantity} шт."
 
     def add_product(self, new_product: Product):
-        self.__products.append(new_product)
-        Category.product_count += 1
+        if isinstance(new_product, Product):
+            self.__products.append(new_product)
+            Category.product_count += 1
+        else:
+            raise TypeError(
+                "Нельзя добавить продукт не относящийся к классу Product или его наследникам"
+            )
 
     @property
     def products(self):
@@ -84,3 +95,55 @@ class Category:
             # print(f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n")
             print(product)
             print()
+
+
+class Smartphone(Product):
+    """Класс категории Смартфонов"""
+
+    def __init__(
+        self, name, description, price, quantity, efficiency, model, memory, color
+    ):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    """Класс категории Травы газонной"""
+
+    def __init__(
+        self, name, description, price, quantity, country, germination_period, color
+    ):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
+
+
+# my checking
+# if __name__ == "__main__":
+#     smart = Smartphone("Xiaomi", "description norm tel", 100, 5, "efficiency-Xiaomi", "note 9", "128GB", "White")
+#     smart2 = Smartphone("Sony", "description norm Sonyl", 200, 12, "efficiency-Sony", "Super model", "64GB", "Grey")
+#     prod = Product("Test_name", "Test description", 54.99, 65)
+#     # print(smart.efficiency)
+#     # print(smart.name)
+#     # print(smart.color)
+#     # print(smart.description)
+#
+#     print(prod + prod)
+#
+#     my_category = Category(
+#         "Cat_Test_name",
+#         "Category Test description",
+#         [
+#             Product("Test_name", "Test description", 54.99, 65),
+#             Product("Test_name2", "Test description2", 254.99, 15),
+#             Product("Test_name3", "Test description3", 354.99, 25),
+#         ],
+#     )
+#
+#     print(my_category.products)
+#     my_category.add_product(1)
+#     print(my_category.products)

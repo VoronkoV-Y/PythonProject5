@@ -1,8 +1,11 @@
 from unittest.mock import Mock, patch
+
+import pytest
+
 from src.my_classes import Product
 
-
 # тесты для класса Product
+
 
 def test_product_class_init(product_fixture):
     assert product_fixture.name == "Test_name"
@@ -12,22 +15,22 @@ def test_product_class_init(product_fixture):
 
 
 def test_product_class_price(capsys, product_fixture):
-    product_fixture.price = 100 # повышение цены
+    product_fixture.price = 100  # повышение цены
     assert product_fixture.price == 100
 
-    product_fixture.price = -100 # цена ниже 0
+    product_fixture.price = -100  # цена ниже 0
     screen_message = capsys.readouterr()
     assert screen_message.out.strip() == "Цена не должна быть нулевая или отрицательная"
 
 
 def test_product_class_price_low_yes(product_fixture):
-    with patch('builtins.input', return_value='y') as mock_input:
+    with patch("builtins.input", return_value="y") as mock_input:
         product_fixture.price = 34  # понижение цены
         assert product_fixture.price == 34
 
 
 def test_product_class_price_low_no(product_fixture):
-    with patch('builtins.input', return_value='test') as mock_input:
+    with patch("builtins.input", return_value="test") as mock_input:
         product_fixture.price = 34  # понижение цены
         assert product_fixture.price == 54.99
 
@@ -53,11 +56,13 @@ def test_product_class_str(capsys, product_fixture):
     screen_message = capsys.readouterr()
     assert screen_message.out.strip() == "Test_name, 54.99 руб. Остаток: 65 шт."
 
+
 def test_product_class_add(product_fixture, product_2_fixture):
     assert product_fixture + product_2_fixture == 6874.35
 
 
 # тесты для класса Category
+
 
 def test_category_class(capsys, category_1_fixture, category_2_fixture):
     assert category_1_fixture.name == "Cat_Test_name"
@@ -65,7 +70,10 @@ def test_category_class(capsys, category_1_fixture, category_2_fixture):
 
     category_1_fixture.products
     screen_message = capsys.readouterr()
-    assert screen_message.out.strip() == 'Test_name, 54.99 руб. Остаток: 65 шт.\n\nTest_name2, 254.99 руб. Остаток: 15 шт.\n\nTest_name3, 354.99 руб. Остаток: 25 шт.'
+    assert (
+        screen_message.out.strip()
+        == "Test_name, 54.99 руб. Остаток: 65 шт.\n\nTest_name2, 254.99 руб. Остаток: 15 шт.\n\nTest_name3, 354.99 руб. Остаток: 25 шт."
+    )
 
     assert category_2_fixture.name == "Cat_Test_name 2"
     assert category_2_fixture.description == "Category Test description 2"
@@ -83,7 +91,64 @@ def test_category_add_product(category_1_fixture):
     category_1_fixture.add_product(new_prod)
     assert category_1_fixture.product_count == category_count_initial + 1
 
+
 def test_category_class_str(capsys, category_1_fixture):
     print(category_1_fixture)
     screen_message = capsys.readouterr()
     assert screen_message.out.strip() == "Cat_Test_name, количество продуктов: 105 шт."
+
+
+def test_smartphone_class_init(smartphone1_fixture):
+    assert smartphone1_fixture.name == "Xiaomi"
+    assert smartphone1_fixture.description == "description norm tel"
+    assert smartphone1_fixture.price == 100
+    assert smartphone1_fixture.quantity == 5
+    assert smartphone1_fixture.efficiency == "efficiency-Xiaomi"
+    assert smartphone1_fixture.model == "note 9"
+    assert smartphone1_fixture.memory == "128GB"
+    assert smartphone1_fixture.color == "White"
+
+
+def test_lawngrass_class_init(lawngrass1_fixture):
+    assert lawngrass1_fixture.name == "Газонная трава"
+    assert lawngrass1_fixture.description == "Элитная трава для газона"
+    assert lawngrass1_fixture.price == 500
+    assert lawngrass1_fixture.quantity == 20
+    assert lawngrass1_fixture.country == "Россия"
+    assert lawngrass1_fixture.germination_period == "7 дней"
+    assert lawngrass1_fixture.color == "Зеленый"
+
+
+def test_smartphone_class_add(smartphone1_fixture, smartphone2_fixture):
+    assert smartphone1_fixture + smartphone2_fixture == 2900
+
+
+def test_lawngrass_class_add(lawngrass1_fixture, lawngrass2_fixture):
+    assert lawngrass1_fixture + lawngrass2_fixture == 16750
+
+
+def test_different_categories_add(smartphone1_fixture, lawngrass1_fixture):
+    with pytest.raises(TypeError):
+        result = lawngrass1_fixture + smartphone1_fixture
+
+
+def test_category_add_product_smartphone(
+    capsys, category_1_fixture, smartphone1_fixture
+):
+    new_prod_smartphone = smartphone1_fixture
+    category_1_fixture.add_product(new_prod_smartphone)
+    category_1_fixture.products
+    screen_message = capsys.readouterr()
+    assert (
+        screen_message.out.strip()
+        == "Test_name, 54.99 руб. Остаток: 65 шт.\n\nTest_name2, 254.99 руб. Остаток: 15 шт.\n\nTest_name3, 354.99 руб. Остаток: 25 шт.\n\nXiaomi, 100 руб. Остаток: 5 шт."
+    )
+
+
+def test_category_add_product_error(category_1_fixture):
+    new_prod_not_product = 1000
+    with pytest.raises(
+        TypeError,
+        match="Нельзя добавить продукт не относящийся к классу Product или его наследникам",
+    ):
+        category_1_fixture.add_product(new_prod_not_product)
