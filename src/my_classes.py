@@ -101,6 +101,8 @@ class Category:
             print(product)
             print()
 
+        return self.__products
+
 
 class Smartphone(Product):
     """Класс категории Смартфонов"""
