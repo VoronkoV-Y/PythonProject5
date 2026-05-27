@@ -131,8 +131,26 @@ class LawnGrass(Product):
 if __name__ == "__main__":
     print(Smartphone.__mro__)
 
-    smart = Smartphone("Xiaomi", "description norm tel", 100, 5, "efficiency-Xiaomi", "note 9", "128GB", "White")
-    smart2 = Smartphone("Sony", "description norm Sonyl", 200, 12, "efficiency-Sony", "Super model", "64GB", "Grey")
+    smart = Smartphone(
+        "Xiaomi",
+        "description norm tel",
+        100,
+        5,
+        "efficiency-Xiaomi",
+        "note 9",
+        "128GB",
+        "White",
+    )
+    smart2 = Smartphone(
+        "Sony",
+        "description norm Sonyl",
+        200,
+        12,
+        "efficiency-Sony",
+        "Super model",
+        "64GB",
+        "Grey",
+    )
     prod = Product("Test_name", "Test description", 54.99, 65)
     print(smart.efficiency)
     print(smart.name)
@@ -156,4 +174,3 @@ if __name__ == "__main__":
     print(my_category.products)
     print("__________________________________________________")
     print(Smartphone.__mro__)
-    
