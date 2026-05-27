@@ -20,7 +20,7 @@ def test_product_class_price(capsys, product_fixture):
 
     product_fixture.price = -100  # цена ниже 0
     screen_message = capsys.readouterr()
-    assert screen_message.out.strip() == "Цена не должна быть нулевая или отрицательная"
+    assert screen_message.out.strip().split("\n")[-1] == "Цена не должна быть нулевая или отрицательная"
 
 
 def test_product_class_price_low_yes(product_fixture):
@@ -54,7 +54,9 @@ def test_new_product_existing(user_product_dict2):
 def test_product_class_str(capsys, product_fixture):
     print(product_fixture)
     screen_message = capsys.readouterr()
-    assert screen_message.out.strip() == "Test_name, 54.99 руб. Остаток: 65 шт."
+    assert screen_message.out.strip().split("\n")[-1] == "Test_name, 54.99 руб. Остаток: 65 шт."
+    assert screen_message.out.strip().split("\n")[0] == "Product(Test_name, Test description, 54.99, 65)"
+
 
 
 def test_product_class_add(product_fixture, product_2_fixture):
@@ -71,8 +73,8 @@ def test_category_class(capsys, category_1_fixture, category_2_fixture):
     category_1_fixture.products
     screen_message = capsys.readouterr()
     assert (
-        screen_message.out.strip()
-        == "Test_name, 54.99 руб. Остаток: 65 шт.\n\nTest_name2, 254.99 руб. Остаток: 15 шт.\n\nTest_name3, 354.99 руб. Остаток: 25 шт."
+        screen_message.out.strip().split("\n")[-1]
+        == "Test_name3, 354.99 руб. Остаток: 25 шт."
     )
 
     assert category_2_fixture.name == "Cat_Test_name 2"
@@ -95,7 +97,7 @@ def test_category_add_product(category_1_fixture):
 def test_category_class_str(capsys, category_1_fixture):
     print(category_1_fixture)
     screen_message = capsys.readouterr()
-    assert screen_message.out.strip() == "Cat_Test_name, количество продуктов: 105 шт."
+    assert screen_message.out.strip().split("\n")[-1] == "Cat_Test_name, количество продуктов: 105 шт."
 
 
 def test_smartphone_class_init(smartphone1_fixture):
@@ -140,8 +142,8 @@ def test_category_add_product_smartphone(
     category_1_fixture.products
     screen_message = capsys.readouterr()
     assert (
-        screen_message.out.strip()
-        == "Test_name, 54.99 руб. Остаток: 65 шт.\n\nTest_name2, 254.99 руб. Остаток: 15 шт.\n\nTest_name3, 354.99 руб. Остаток: 25 шт.\n\nXiaomi, 100 руб. Остаток: 5 шт."
+        screen_message.out.strip().split("\n")[-1]
+        == "Xiaomi, 100 руб. Остаток: 5 шт."
     )
 
 

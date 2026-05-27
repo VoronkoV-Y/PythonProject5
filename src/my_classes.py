@@ -1,7 +1,8 @@
 from src.base_classes import BaseProduct
+from src.mixin_classes import PrintMixin
 
 
-class Product(BaseProduct):
+class Product(PrintMixin, BaseProduct):
     """класс Product для создания продуктов"""
 
     product_list = []
@@ -17,6 +18,7 @@ class Product(BaseProduct):
         self.__price = price
         self.quantity = quantity
         Product.product_list.append(self)
+        super().__init__()
 
     def __str__(self):
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
@@ -127,6 +129,8 @@ class LawnGrass(Product):
 
 # my checking
 if __name__ == "__main__":
+    print(Smartphone.__mro__)
+
     smart = Smartphone("Xiaomi", "description norm tel", 100, 5, "efficiency-Xiaomi", "note 9", "128GB", "White")
     smart2 = Smartphone("Sony", "description norm Sonyl", 200, 12, "efficiency-Sony", "Super model", "64GB", "Grey")
     prod = Product("Test_name", "Test description", 54.99, 65)
@@ -150,3 +154,6 @@ if __name__ == "__main__":
     print(my_category.products)
     # my_category.add_product(1)
     print(my_category.products)
+    print("__________________________________________________")
+    print(Smartphone.__mro__)
+    
