@@ -3,10 +3,10 @@ from unittest.mock import Mock, patch
 import pytest
 
 from src.my_classes import Product
+from src.utils import data_load_from_json
+
 
 # тесты для класса Product
-
-
 def test_product_class_init(product_fixture):
     assert product_fixture.name == "Test_name"
     assert product_fixture.description == "Test description"
@@ -21,8 +21,8 @@ def test_product_class_price(capsys, product_fixture):
     product_fixture.price = -100  # цена ниже 0
     screen_message = capsys.readouterr()
     assert (
-        screen_message.out.strip().split("\n")[-1]
-        == "Цена не должна быть нулевая или отрицательная"
+        screen_message.out.strip()
+        == "Product(Test_name, Test description, 54.99, 65)\nЦена не должна быть нулевая или отрицательная"
     )
 
 
@@ -48,22 +48,23 @@ def test_new_product_new(user_product_dict):
 
 def test_new_product_existing(user_product_dict2):
     test_product2 = Product.new_product(user_product_dict2)
+    print(test_product2.product_list)
     assert test_product2.name == "Samsa"
     assert test_product2.description == "Very tasty samsa"
     assert test_product2.price == 180
     assert test_product2.quantity == 100
 
 
+def test_new_product_from_file():
+    assert data_load_from_json("products.json")[0].name == "Смартфоны"
+
+
 def test_product_class_str(capsys, product_fixture):
     print(product_fixture)
     screen_message = capsys.readouterr()
     assert (
-        screen_message.out.strip().split("\n")[-1]
-        == "Test_name, 54.99 руб. Остаток: 65 шт."
-    )
-    assert (
-        screen_message.out.strip().split("\n")[0]
-        == "Product(Test_name, Test description, 54.99, 65)"
+        screen_message.out.strip()
+        == "Product(Test_name, Test description, 54.99, 65)\nTest_name, 54.99 руб. Остаток: 65 шт."
     )
 
 
@@ -72,8 +73,6 @@ def test_product_class_add(product_fixture, product_2_fixture):
 
 
 # тесты для класса Category
-
-
 def test_category_class(capsys, category_1_fixture, category_2_fixture):
     assert category_1_fixture.name == "Cat_Test_name"
     assert category_1_fixture.description == "Category Test description"
@@ -88,11 +87,11 @@ def test_category_class(capsys, category_1_fixture, category_2_fixture):
     assert category_2_fixture.name == "Cat_Test_name 2"
     assert category_2_fixture.description == "Category Test description 2"
 
-    assert category_1_fixture.category_count == 2
-    assert category_2_fixture.category_count == 2
+    assert category_1_fixture.category_count == 4
+    assert category_2_fixture.category_count == 4
 
-    assert category_1_fixture.product_count == 115
-    assert category_2_fixture.product_count == 115
+    assert category_1_fixture.product_count == 149
+    assert category_2_fixture.product_count == 149
 
 
 def test_category_add_product(category_1_fixture):
@@ -111,6 +110,7 @@ def test_category_class_str(capsys, category_1_fixture):
     )
 
 
+# тесты для других классов
 def test_smartphone_class_init(smartphone1_fixture):
     assert smartphone1_fixture.name == "Xiaomi"
     assert smartphone1_fixture.description == "description norm tel"
