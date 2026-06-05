@@ -1,4 +1,8 @@
-class Product:
+from src.base_classes import BaseProduct
+from src.mixin_classes import PrintMixin
+
+
+class Product(PrintMixin, BaseProduct):
     """класс Product для создания продуктов"""
 
     product_list = []
@@ -14,6 +18,7 @@ class Product:
         self.__price = price
         self.quantity = quantity
         Product.product_list.append(self)
+        super().__init__()
 
     def __str__(self):
         return f"{self.name}, {self.__price} руб. Остаток: {self.quantity} шт."
@@ -96,6 +101,8 @@ class Category:
             print(product)
             print()
 
+        return self.__products
+
 
 class Smartphone(Product):
     """Класс категории Смартфонов"""
@@ -120,30 +127,3 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
-
-# my checking
-# if __name__ == "__main__":
-#     smart = Smartphone("Xiaomi", "description norm tel", 100, 5, "efficiency-Xiaomi", "note 9", "128GB", "White")
-#     smart2 = Smartphone("Sony", "description norm Sonyl", 200, 12, "efficiency-Sony", "Super model", "64GB", "Grey")
-#     prod = Product("Test_name", "Test description", 54.99, 65)
-#     # print(smart.efficiency)
-#     # print(smart.name)
-#     # print(smart.color)
-#     # print(smart.description)
-#
-#     print(prod + prod)
-#
-#     my_category = Category(
-#         "Cat_Test_name",
-#         "Category Test description",
-#         [
-#             Product("Test_name", "Test description", 54.99, 65),
-#             Product("Test_name2", "Test description2", 254.99, 15),
-#             Product("Test_name3", "Test description3", 354.99, 25),
-#         ],
-#     )
-#
-#     print(my_category.products)
-#     my_category.add_product(1)
-#     print(my_category.products)
