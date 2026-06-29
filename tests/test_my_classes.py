@@ -2,7 +2,7 @@ from unittest.mock import Mock, patch
 
 import pytest
 
-from src.my_classes import Product
+from src.my_classes import Product, Category
 from src.utils import data_load_from_json
 
 
@@ -164,3 +164,17 @@ def test_category_add_product_error(category_1_fixture):
         match="Нельзя добавить продукт не относящийся к классу Product или его наследникам",
     ):
         category_1_fixture.add_product(new_prod_not_product)
+
+
+def test_product_class_zero_quantity():
+    with pytest.raises(ValueError, match="Товар с нулевым количеством не может быть добавлен"):
+        new_product_zero_quantity = Product("Test Testo", "Test Testo's description", 180, 0)
+
+
+def test_category_middle_price(category_1_fixture):
+    assert category_1_fixture.middle_price() == 221.65666666666667
+
+
+def test_category_middle_price_zero():
+    category_empty = Category("Пустая категория", "Категория без продуктов", [])
+    assert category_empty.middle_price() == 0
